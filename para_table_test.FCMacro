@@ -1,0 +1,43 @@
+# because macro editor block by document view, so i need those empty lines! sorry.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# import modules
+import cadquery, Part
+
+# delete previous build object
+try:
+	App.getDocument("Unnamed").removeObject("Shape")
+except:
+	print()
+
+# parameter(s)
+xSize = 20.0
+ySize = 20.0
+zSize = 5.0
+
+# build
+result = cadquery.Workplane('XY'). \
+	workplane(offset=zSize, invert=False). \
+	rect(xSize, ySize, centered=True, forConstruction=True)
+
+# show build result
+Part.show(result.toFreecad())
+Gui.activeDocument().activeView().viewAxometric()
+Gui.SendMsgToActiveView("ViewFit")
