@@ -18,24 +18,25 @@
 
 
 
-# import modules
+# import modules.
 import cadquery, Part
 
-# delete previous build object
+# delete previous build object.
 try:
 	App.getDocument("Unnamed").removeObject("Shape")
 except:
 	print()
 
-# parameter(s)
+# parameter(s).
 xSize = 90.0
 ySize = 180.0
 zSize = 75.0
 tableThickess = 5.0
 legOffset = 5.0
 legSize = 10.0
+filletSize = 1.0
 
-# build
+# build.
 result = cadquery.Workplane("XY") # start from XY plane.
 result = result.workplane(offset=zSize-tableThickess, invert=False) # move to table height.
 result = result.box(xSize, ySize, tableThickess, centered=(True, True, False)) # create table top.
@@ -44,8 +45,9 @@ result = result.workplane(offset=0, invert=False) # change direction to -Z.
 result = result.rect(xSize-legOffset-legSize, ySize-legOffset-legSize, forConstruction=True) # defined table leg's position.
 result = result.vertices() # collect 4 leg's position.
 result = result.box(legSize, legSize, zSize-tableThickess, centered=(True, True, False)) # create legs.
+result = result.fillet(filletSize)
 
-# show build result
+# show build result.
 Part.show(result.toFreecad()) # create whole model.
 Gui.ActiveDocument.ActiveView.setAxisCross(True) # turn on axis display.
 Gui.activeDocument().activeView().viewAxometric() # change viewpoint to axometric.
